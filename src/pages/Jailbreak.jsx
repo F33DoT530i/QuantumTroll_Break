@@ -1,14 +1,15 @@
-Here is the full script for the main page:
-import React, { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Cpu, ShieldCheck, Terminal, Zap, Power, AlertTriangle } from 'lucide-react';
 
 // --- Components ---
 
+// Component to display the scrolling log output
 const LogOutput = ({ logs }) => {
   const endOfLogsRef = useRef(null);
 
   useEffect(() => {
+    // Scrolls to the bottom of the log as new entries are added
     endOfLogsRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [logs]);
 
@@ -28,12 +29,14 @@ const LogOutput = ({ logs }) => {
             <span className="text-gray-500 mr-2">&gt;</span>{log.message}
           </motion.p>
         ))}
-        <div ref__={endOfLogsRef} />
+        {/* Fixed: Changed ref__ to ref (was a bug in original code) */}
+        <div ref={endOfLogsRef} />
       </div>
     </div>
   );
 };
 
+// Component to display the progress bar
 const ProgressBar = ({ progress }) => (
   <div className="w-full bg-gray-700 rounded-full h-2.5 my-4">
     <motion.div
@@ -45,6 +48,7 @@ const ProgressBar = ({ progress }) => (
   </div>
 );
 
+// Component for the success modal that appears after the simulation
 const SuccessModal = ({ onReset }) => (
   <motion.div
     initial={{ opacity: 0, scale: 0.9 }}
@@ -69,15 +73,17 @@ const SuccessModal = ({ onReset }) => (
   </motion.div>
 );
 
-// --- Main Page ---
+// --- Main Page Component ---
 
 export default function JailbreakPage() {
-  const [isProcessing, setIsProcessing] = useState(false);
-  const [logs, setLogs] = useState([{ message: "Waiting for user to initiate process..."}]);
-  const [progress, setProgress] = useState(0);
-  const [status, setStatus] = useState("Ready to Begin");
-  const [isComplete, setIsComplete] = useState(false);
+  // State variables to manage the simulation
+  const [isProcessing, setIsProcessing] = useState(false); // True when simulation is running
+  const [logs, setLogs] = useState([{ message: "Waiting for user to initiate process..."}]); // Array of log messages
+  const [progress, setProgress] = useState(0); // Progress percentage
+  const [status, setStatus] = useState("Ready to Begin"); // Current status message
+  const [isComplete, setIsComplete] = useState(false); // True when simulation is finished
 
+  // Define the steps of the simulated jailbreak process
   const jailbreakSteps = [
     { log: "Initializing QuantumBreak exploit chain...", status: "Initializing...", duration: 1000, progress: 5 },
     { log: "Connecting to device (iPhone 15 Pro Max)...", status: "Connecting...", duration: 1500, progress: 15 },
@@ -90,28 +96,32 @@ export default function JailbreakPage() {
     { log: "Jailbreak successful. Cleaning up...", status: "Finalizing...", duration: 1000, progress: 100 },
   ];
 
+  // Function to start the simulation
   const startJailbreak = () => {
     setIsProcessing(true);
-    setLogs([]);
+    setLogs([]); // Clear previous logs
     setProgress(0);
     setStatus("Starting...");
 
     let cumulativeDelay = 0;
+    // Iterate through each step and set a timeout to simulate the process
     jailbreakSteps.forEach(step => {
       setTimeout(() => {
-        setLogs(prev => [...prev, { message: step.log }]);
-        setStatus(step.status);
-        setProgress(step.progress);
+        setLogs(prev => [...prev, { message: step.log }]); // Add log entry
+        setStatus(step.status); // Update status message
+        setProgress(step.progress); // Update progress bar
       }, cumulativeDelay);
-      cumulativeDelay += step.duration;
+      cumulativeDelay += step.duration; // Accumulate delay for sequential execution
     });
 
+    // After all steps, set the simulation as complete
     setTimeout(() => {
       setIsComplete(true);
       setStatus("Jailbreak Successful!");
     }, cumulativeDelay);
   };
 
+  // Function to reset the simulation to its initial state
   const resetState = () => {
     setIsProcessing(false);
     setIsComplete(false);
@@ -124,7 +134,7 @@ export default function JailbreakPage() {
     <div className="flex flex-col items-center justify-center min-h-screen p-4">
       <div className="w-full max-w-3xl mx-auto">
         
-        {/* Header */}
+        {/* Header Section */}
         <header className="text-center mb-8">
           <Zap className="w-16 h-16 mx-auto text-cyan-400 mb-2 drop-shadow-[0_0_8px_rgba(0,184,212,0.7)]" />
           <h1 className="text-4xl md:text-5xl font-bold text-white drop-shadow-[0_0_5px_rgba(255,255,255,0.3)]">
@@ -133,9 +143,10 @@ export default function JailbreakPage() {
           <p className="text-cyan-300">iOS 17.6 Jailbreak Simulator</p>
         </header>
 
-        {/* Main Content */}
+        {/* Main Content Area */}
         <main className="bg-[#161B22] border border-gray-700 rounded-xl p-6 md:p-8 space-y-6 shadow-2xl shadow-cyan-500/10">
           
+          {/* Device and Status Display */}
           <div className="flex justify-between items-center text-sm border-b border-gray-700 pb-4">
             <div className="flex items-center gap-2">
               <Cpu className="text-gray-400" /> <span>Device: <strong>iPhone 15 Pro Max</strong></span>
@@ -145,14 +156,17 @@ export default function JailbreakPage() {
             </div>
           </div>
           
+          {/* Log Output Component */}
           <LogOutput logs={logs} />
           
+          {/* Progress Bar Component */}
           <ProgressBar progress={progress} />
 
+          {/* Initiate Button */}
           <div className="pt-4">
             <button
               onClick={startJailbreak}
-              disabled={isProcessing}
+              disabled={isProcessing} // Disable button while processing
               className="w-full flex items-center justify-center gap-3 bg-cyan-500 text-black font-bold text-lg py-4 px-6 rounded-lg transition-all duration-300 enabled:hover:bg-cyan-400 disabled:opacity-50 disabled:cursor-not-allowed shadow-[0_0_20px_rgba(0,184,212,0.4)] enabled:hover:shadow-[0_0_30px_rgba(0,184,212,0.6)]"
             >
               <Power />
@@ -161,7 +175,7 @@ export default function JailbreakPage() {
           </div>
         </main>
         
-        {/* Footer */}
+        {/* Footer Section */}
         <footer className="text-center mt-8 text-xs text-gray-500">
           <p>
             <AlertTriangle className="w-3 h-3 inline-block mr-1"/>
@@ -172,60 +186,10 @@ export default function JailbreakPage() {
 
       </div>
       
+      {/* Success Modal (conditionally rendered) */}
       <AnimatePresence>
         {isComplete && <SuccessModal onReset={resetState} />}
       </AnimatePresence>
     </div>
   );
 }
-# Dependencies
-node_modules/
-.pnp
-.pnp.js
-
-# Testing
-coverage/
-
-# Production build
-dist/
-build/
-
-# Environment variables
-.env
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
-
-# Editor directories and files
-.vscode/
-.idea/
-*.suo
-*.ntvs*
-*.njsproj
-*.sln
-*.sw?
-.DS_Store
-
-# Logs
-logs
-*.log
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-pnpm-debug.log*
-lerna-debug.log*
-
-# Vite
-.vite
-
-# Optional npm cache directory
-.npm
-
-# Optional eslint cache
-.eslintcache
-
-# Misc
-.cache
-.temp
-.tmp
