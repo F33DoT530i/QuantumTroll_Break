@@ -80,20 +80,20 @@ npm run lint
 QuantumTroll_Break/
 ├── src/
 │   ├── components/
-│   │   └── Layout.js          # Layout wrapper component
+│   │   └── Layout.jsx          # Layout wrapper component
 │   ├── pages/
-│   │   └── Jailbreak.js       # Main jailbreak simulator page
-│   ├── App.js                 # Root application component
-│   ├── main.jsx               # Entry point
-│   └── index.css              # Global styles with Tailwind directives
-├── public/                    # Static assets
-├── index.html                 # HTML template
-├── package.json               # Dependencies and scripts
-├── vite.config.js             # Vite configuration
-├── tailwind.config.js         # Tailwind CSS configuration
-├── postcss.config.js          # PostCSS configuration
-├── .eslintrc.cjs              # ESLint configuration
-└── README.md                  # This file
+│   │   └── Jailbreak.jsx       # Main jailbreak simulator page
+│   ├── App.jsx                 # Root application component
+│   ├── main.jsx                # Entry point
+│   └── index.css               # Global styles with Tailwind directives
+├── public/                     # Static assets
+├── index.html                  # HTML template
+├── package.json                # Dependencies and scripts
+├── vite.config.js              # Vite configuration
+├── tailwind.config.js          # Tailwind CSS configuration
+├── postcss.config.js           # PostCSS configuration
+├── .eslintrc.cjs               # ESLint configuration
+└── README.md                   # This file
 ```
 
 ## 🎮 How to Use
@@ -147,7 +147,7 @@ See the [LICENSE](LICENSE) file for details.
 ### Changes Made to Fix the Exploit:
 1. **Fixed React ref bug**: Changed `ref__` to `ref` in LogOutput component
 2. **Created proper React project structure**: Set up Vite-based React application
-3. **Implemented all components**: Jailbreak.js, Layout.js, App.js, and entry point
+3. **Implemented all components**: Jailbreak.jsx, Layout.jsx, App.jsx, and entry point
 4. **Added build tooling**: Configured Vite, Tailwind CSS, PostCSS, and ESLint
 5. **Documented the codebase**: Added comprehensive comments throughout
 

@@ -1,6 +1,5 @@
-import React from 'react';
-import Layout from './components/Layout';
-import JailbreakPage from './pages/Jailbreak';
+import Layout from './components/Layout.jsx';
+import JailbreakPage from './pages/Jailbreak.jsx';
 
 // Main App component that wraps the Jailbreak page in the Layout
 function App() {

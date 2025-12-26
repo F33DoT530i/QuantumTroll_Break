@@ -1,5 +1,3 @@
-import React from "react";
-
 // Layout component provides the dark background and monospace font for the entire application
 export default function Layout({ children }) {
   return (
